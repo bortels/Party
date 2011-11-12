@@ -14,6 +14,7 @@ gravity
 emit() = routine to decide to emit (or not) a particle. nil for particles
 draw() = routine to draw the party (often nil for an emitter)
 update() = updates state of party (usually based on the properties above)
+dead() = boolean to decide if a particle is dead and should be culled
 
 The user of the Party class simply needs to add the following calls
 to the appropriate places in their main.lua:
@@ -27,4 +28,33 @@ emitter will trigger calls by that emitter to update() it's children,
 and their children, and so on down the line). The update() routine also
 tends to be the correct place to call emit(). 
 
+After an emitter updates all of their particles, it culls the list, removing
+any particle where dead() returns true. 
+
+example:
+
+fire = Party() -- a torch
+fire.x=WIDTH/2
+fire.y=0
+fire.maxp = 100
+-- no fire.draw() - the default is to do draw() on all it's particles
+-- no fire.update() - default for emitter is to do particle() if # list < maxp
+function fire.particle
+   ember = Party()
+   ember.x = self.x
+   ember.y = self.y 
+   ember.alpha = 255
+   function ember.update() 
+       self.y = self.y + rand(3)+1
+       self.alpha = self.alpha - rand()
+   end
+   function ember.dead() return (self.y>HEIGHT) end
+   function ember.draw()
+      stroke(255, 100, 0, self.alpha)
+      rect(self.x, self.y, 1)
+   end
+   table.add(self.list, ember)
+end
+
+end
 
