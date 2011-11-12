@@ -1,0 +1,30 @@
+Party - A particle system for Codea
+
+The Party class creates a new object, a "Party", that can act as
+a particle emitter, a particle, or both - indeed, you can have an
+emitter that emits emitters, and so on. In most uses, the emitter will
+emit non-emitter particles, and acts as a regular particle system. 
+
+Parties have the following properties - most are optional
+or have reasonable defaults:
+x, y = location
+dx, dy = delta x and y, or 'velocity'
+mass
+gravity
+emit() = routine to decide to emit (or not) a particle. nil for particles
+draw() = routine to draw the party (often nil for an emitter)
+update() = updates state of party (usually based on the properties above)
+
+The user of the Party class simply needs to add the following calls
+to the appropriate places in their main.lua:
+
+in setup(): one or more "e=Party()" calls, perhaps with some followup
+configuration: ("e.x = WIDTH/2 e.y=HEIGHT"). 
+
+in draw(): Calls to update() and draw() (which will trigger cascading
+calls to particle children of the emitter - so a call to update() an
+emitter will trigger calls by that emitter to update() it's children,
+and their children, and so on down the line). The update() routine also
+tends to be the correct place to call emit(). 
+
+
