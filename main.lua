@@ -1,15 +1,17 @@
 LOVECODIFYHUD = false
 if dofile ~= nil then
    dofile("loveCodify.lua")
+   dofile("Party/Party.lua")
 end
 
 function setup()
-   print("Ok then")
+   p = Party()
 end
 
 function draw()
    background(0, 0, 0, 255)
    stroke(255, 255, 255, 255)
    strokeWidth(3)
-   line(0, 0, WIDTH, HEIGHT)
+   p.update()
+   p.draw()
 end
