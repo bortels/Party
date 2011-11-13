@@ -54,4 +54,3 @@ function Party:oob(p)
 	end
 	return false
 end
-    
